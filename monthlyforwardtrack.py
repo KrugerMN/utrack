@@ -16,7 +16,7 @@ from tqdm import tqdm
 import pandas as pd
 
 """
-1. library
+1. Directory
 """
 outputdir = '/home/kruger/data/utrack/output/'
 inputdir = '/home/kruger/data/utrack/input/'
@@ -120,6 +120,9 @@ def MR_yearly_source(source_lat,source_lon):
         
         
 #...... 
+"""
+5. Track moisture recycling
+"""
 total_main = 0
 total_montly_precipip_tracking = np.zeros((12,360,720))
 
@@ -141,6 +144,9 @@ for i in tqdm(range(Screened_data.shape[0])):
 #### Add pixels at monthly scale
 #### Run in parallel by changing dataframe range    
 
+"""
+6. Plots
+"""
 # plot test for total_montly_precipip_tracking
 ax = plt.subplot()
 ax.imshow(total_monthly_precipip_tracking[1,:,:])
@@ -157,7 +163,7 @@ ax[0].set_ylim(-40, 20)
 ax[0].scatter(np.array(Screened_data['Lon']), np.array(Screened_data['Lat']), c='black', alpha = 0.7, s = 0.5, marker = '.')
 ax[0].set_title('Forwardtracking (mm/year)')
 
-Change name here for saving file
+#Change name here for saving file
 
 
 # Save total precip
