@@ -77,7 +77,7 @@ Screened_data = pd.DataFrame({'Lat': lat,'Lon': lon,'Screened': Screened_data})
 
 ####### Only for trial run 
 #Screened_data = Screened_data[0:10]
-Screened_data = Screened_data.where(Screened_data['Lat'] == 0.25).dropna()[0:10]
+#Screened_data = Screened_data.where(Screened_data['Lat'] == 0.25).dropna()[0:10]
 
 import warnings
 warnings.filterwarnings("ignore")
@@ -92,7 +92,7 @@ def MR_yearly_source(source_lat,source_lon):
     monthly_precipip_tracking[:] = np.nan
     #global main
     main = 0
-    #montly_precipip_tracking = 0
+    
     month_name = ['01','02','03','04','05','06','07','08','09','10','11','12']
     for i in (range(12)):
         # Read the Utrack moisture recycling data here
@@ -124,7 +124,7 @@ def MR_yearly_source(source_lat,source_lon):
 5. Track moisture recycling
 """
 total_main = 0
-total_montly_precipip_tracking = np.zeros((12,360,720))
+total_monthly_precipip_tracking = np.zeros((12,360,720))
 
 
 #### Run in parallel by changing dataframe range 
@@ -139,11 +139,32 @@ for i in tqdm(range(Screened_data.shape[0])):
         ### There should be a code here to sum all evaporation for pixels
         for j in range(12):
             
-            total_montly_precipip_tracking[j,] +=  montly_precipip_tracking[j,]
+            total_monthly_precipip_tracking[j,] +=  monthly_precipip_tracking[j,]
                      
 #### Add pixels at monthly scale
 #### Run in parallel by changing dataframe range    
 
+# """
+# 5. Track moisture recycling
+# """
+# total_main = 0
+# total_montly_precipip_tracking = np.zeros((12,360,720))
+
+
+# #### Run in parallel by changing dataframe range 
+# for i in tqdm(range(Data.shape[0])):
+#     source_lat, source_lon = np.array(Data[['Lat','Lon']])[i]
+#     MR_yearly_source(source_lat,source_lon)
+#     if np.isnan(Evap) == True:
+#         continue
+#     else:
+#         total_main += main
+
+#         ### There should be a code here to sum all evaporation for pixels
+#         for j in range(12):
+            
+#             total_monthly_precipip_tracking[j,] +=  monthly_precipip_tracking[j,]
+                     
 """
 6. Plots
 """
@@ -168,5 +189,12 @@ ax[0].set_title('Forwardtracking (mm/year)')
 
 # Save total precip
 total_main.to_netcdf(outputdir)
-total_monthly_precipip_tracking.to_netcdf(outputdir)
 
+longitude=Data.longitude
+latitude=Data.latitude
+monthly_df= np.zeros((12,360,720))
+month_name = ['01','02','03','04','05','06','07','08','09','10','11','12']
+for i in range(12):
+    monthly_df[i,:,:] = xr.DataArray(total_monthly_precipip_tracking[i,], coords=[('lon', longitude), ('lat', latitude)])
+    monthly_df[i,:,:].to_netcdf(outputdir+'total_monthly_precip_tracking'+
+                             str(month_name[i])+'.nc')
