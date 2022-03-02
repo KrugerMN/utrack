@@ -76,8 +76,8 @@ for y in range(Screening.shape[0]):
 Screened_data = pd.DataFrame({'Lat': lat,'Lon': lon,'Screened': Screened_data})
 
 ####### Only for trial run 
-#Screened_data = Screened_data[0:10]
-#Screened_data = Screened_data.where(Screened_data['Lat'] == 0.25).dropna()[0:10]
+Screened_data = Screened_data[0:10]
+Screened_data = Screened_data.where(Screened_data['Lat'] == 0.25).dropna()[0:10]
 
 import warnings
 warnings.filterwarnings("ignore")
