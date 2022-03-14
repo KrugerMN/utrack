@@ -46,7 +46,7 @@ print('Longitude = [', Evap_agg.lon[0].values, '→', Evap_agg.lon[-1].values, '
 2. Load your dataset for forwardtracking in Dataframe format
 Note: Longitude should be from 0 to 360 degrees 
 """
-Data = xr.open_dataset('/home/kruger/data/utrack/input/MODIS/CongoHotspot_TropcForest.nc').get("htrop_forest_20km") 
+Data = xr.open_dataset('/home/kruger/data/utrack/input/MODIS/ContHotspot_TropcForest.nc').get("htrop_forest_20km") 
 # Run this part to convert latitude 90:-90 & longitude 0:360 
 lon = Data.longitude
 lon = lon.values
